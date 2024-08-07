@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import Task from "./components/task";
 
 function App() {
+  const [tasksList, setTaskslist] = useState([]);
+  const [task, setTasklist] = useState("");
+  function createNewTask(event) {
+    setTasklist(event.target.value);
+  }
+
+  function addTask(newTask) {
+    setTaskslist((prevList) => [...prevList, newTask]);
+    setTasklist((prev) => "");
+  }
+
+  function clearTaskList() {
+    setTaskslist((prevList) => []);
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="btns">
+        <input type="text" value={task} onChange={createNewTask} />
+        <button onClick={() => addTask(task)}>add new Task</button>
+        <button onClick={clearTaskList}>Очистить список задач</button>
+      </div>
+      {tasksList.map((item, ind) => {
+        return <Task key={ind} task={item} />;
+      })}
     </div>
   );
 }
